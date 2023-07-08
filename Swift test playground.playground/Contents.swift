@@ -118,12 +118,14 @@ func testAddReservation() {
     let clientList : [Client] = [Client(name: "Marcos", age: 28, height: 12),Client(name: "Marcos2", age: 24, height: 12)]
     
     hotel.addReservation(clientList: clientList, time: 5, breakfast: true)
-    
+    assert(hotel.getReservations().count > 0, "No se ha añadido bien la reserva")
     //Test the reservation was saved
-    print("Reservas añadidas -> ",hotel.getReservations())
+    print("Reservas añadidas -> ",hotel.getReservations().count)
     
     //checks the client validation
-        hotel.addReservation(clientList: clientList, time: 5, breakfast: true)
+    hotel.addReservation(clientList: clientList, time: 5, breakfast: true)
+    print("Reservas añadidas -> ",hotel.getReservations().count)
+
 }
 
 testAddReservation()
@@ -170,17 +172,18 @@ func testReservationPrice(){
     
     let clientList : [Client] = [Client(name: "Marcos", age: 28, height: 12)]
     let clientList2: [Client] = [Client(name: "Marcos2", age: 24, height: 12)]
-    let clientList3: [Client] = [Client(name: "Marcos3", age: 23, height: 12)]
 
+    //Change time or breakfast value to break the test
     hotel.addReservation(clientList: clientList, time: 5, breakfast: true)
     hotel.addReservation(clientList: clientList2, time: 5, breakfast: true)
-    hotel.addReservation(clientList: clientList3, time: 2, breakfast: false)
 
     
     let reservations = hotel.getReservations()
     
-    for reservation in reservations {
-        print("Test precio -> ",reservation.price)
+    assert(reservations[0].price == reservations[1].price, "Las reservas no tienen en mismo precio")
+    
+    for (index, reservation) in reservations.enumerated() {
+        print("Test precio reserva \(index) ->  ",reservation.price)
     }
 
 }
